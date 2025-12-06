@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Menu, X, ExternalLink, Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast";
 import logo from "@assets/2025-11-30_21.27.41_1765057405798.jpg";
 import chart from "@assets/2025-11-29_15.30.00_1765057405798.jpg";
 import swapScreen from "@assets/Screenshot_2025-12-07_at_00.19.03_1765057420024.png";
@@ -198,6 +200,39 @@ const Tokenomics = () => {
 };
 
 const HowToBuy = () => {
+  const { toast } = useToast();
+
+  const handleCopy = async () => {
+    const address = "EQDKMh511DOn02mL0nf0JrND0TlkUKmos17eK9zKyGAsjS1K";
+    try {
+      await navigator.clipboard.writeText(address);
+      toast({
+        title: "Copied!",
+        description: "Contract address copied to clipboard.",
+      });
+    } catch (err) {
+      // Fallback for older browsers or non-secure contexts
+      const textArea = document.createElement("textarea");
+      textArea.value = address;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        toast({
+          title: "Copied!",
+          description: "Contract address copied to clipboard.",
+        });
+      } catch (err) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to copy address manually.",
+        });
+      }
+      document.body.removeChild(textArea);
+    }
+  };
+
   const buyOptions = [
     {
       name: "Bidask (recommended)",
@@ -246,7 +281,7 @@ const HowToBuy = () => {
                 <h3 className="font-bold mb-2">Contract Address:</h3>
                 <div className="font-mono text-xs md:text-sm break-all bg-gray-100 p-2 rounded border border-gray-300 flex items-center justify-between gap-2">
                   EQDKMh511DOn02mL0nf0JrND0TlkUKmos17eK9zKyGAsjS1K
-                  <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => navigator.clipboard.writeText("EQDKMh511DOn02mL0nf0JrND0TlkUKmos17eK9zKyGAsjS1K")}>
+                  <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0" onClick={handleCopy}>
                     <Copy className="h-3 w-3" />
                   </Button>
                 </div>
@@ -400,6 +435,7 @@ function App() {
         <CTA />
       </main>
       <Footer />
+      <Toaster />
     </div>
   );
 }
