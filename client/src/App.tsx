@@ -263,14 +263,16 @@ const HowToBuy = () => {
               href={option.url}
               target="_blank"
               rel="noreferrer"
-              className={`block p-8 ${option.color} sketch-border flex flex-col items-center justify-center gap-4 min-h-[200px] group text-center`}
+              className={`block p-8 ${option.color} sketch-border flex flex-col items-center justify-between gap-4 min-h-[200px] group text-center h-full`}
               whileHover={{ scale: 1.05, rotate: 1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="text-2xl font-hand font-bold group-hover:underline underline-offset-4">
-                {option.name}
-              </span>
-              <ExternalLink className="w-6 h-6 opacity-50 group-hover:opacity-100 transition-opacity" />
+              <div className="flex-grow flex items-center justify-center">
+                 <span className="text-2xl font-hand font-bold group-hover:underline underline-offset-4">
+                   {option.name}
+                 </span>
+              </div>
+              <ExternalLink className="w-6 h-6 opacity-50 group-hover:opacity-100 transition-opacity mt-auto" />
             </motion.a>
           ))}
         </div>
