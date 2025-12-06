@@ -177,7 +177,6 @@ const Tokenomics = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Tokenomics</h2>
-          <p className="font-mono text-muted-foreground">The serious math part (drawn by a child)</p>
         </div>
         
         <div className="flex justify-center">
