@@ -3,7 +3,7 @@
 set -e
 
 DOMAIN="tondev.foundation"
-EMAIL="your-email@example.com"  # Change this to your email
+EMAIL="ilya@farmix.tg"  # Change this to your email
 
 echo "🔒 Setting up SSL certificate for $DOMAIN..."
 
@@ -55,7 +55,6 @@ $DOCKER_COMPOSE run --rm certbot certonly \
     --email $EMAIL \
     --agree-tos \
     --no-eff-email \
-    --force-renewal \
     -d $DOMAIN \
     -d www.$DOMAIN
 
