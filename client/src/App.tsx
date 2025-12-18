@@ -10,6 +10,8 @@ import swapScreen from "@assets/Screenshot_2025-12-07_at_00.19.03_1765057420024.
 
 // --- Components ---
 
+const APPLY_LINK = "https://t.me/tondev_jetton/289";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,6 +42,15 @@ const Navbar = () => {
               {link.name}
             </a>
           ))}
+          <Button 
+            asChild
+            size="sm"
+            className="sketch-border bg-accent text-black hover:bg-accent/90 font-hand"
+          >
+            <a href={APPLY_LINK} target="_blank" rel="noreferrer">
+              Apply for Visa
+            </a>
+          </Button>
           <div className="flex gap-3">
             <a href="https://t.me/tondev_jetton" target="_blank" rel="noreferrer" className="hover:scale-110 transition-transform">
                <span className="sr-only">Telegram</span>
@@ -72,6 +83,14 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
+            <Button 
+              asChild 
+              className="sketch-border bg-accent text-black hover:bg-accent/90 font-hand w-full justify-center"
+            >
+              <a href={APPLY_LINK} target="_blank" rel="noreferrer">
+                Apply for Visa
+              </a>
+            </Button>
             <div className="flex gap-4 mt-2">
                <a href="https://t.me/tondev_jetton" target="_blank" rel="noreferrer" className="font-bold underline">Telegram</a>
                <a href="https://x.com/tondevmeme" target="_blank" rel="noreferrer" className="font-bold underline">Twitter</a>
@@ -407,6 +426,14 @@ const Footer = () => {
           <a href="#tokenomics" className="hover:text-primary transition-colors">Tokenomics</a>
           <a href="#how-to-buy" className="hover:text-primary transition-colors">How to Buy</a>
           <a href="#community" className="hover:text-primary transition-colors">Community</a>
+          <a 
+            href={APPLY_LINK} 
+            target="_blank" 
+            rel="noreferrer" 
+            className="hover:text-primary transition-colors"
+          >
+            Apply for Visa
+          </a>
         </div>
 
         <div className="flex gap-6">
