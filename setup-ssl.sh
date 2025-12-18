@@ -30,9 +30,16 @@ elif [ "$PUBLIC_IP" != "$DNS_IP" ]; then
     fi
 fi
 
+# Detect docker compose command
+if docker compose version &> /dev/null; then
+    DOCKER_COMPOSE="docker compose"
+else
+    DOCKER_COMPOSE="docker-compose"
+fi
+
 # Make sure nginx is running
 echo "⏳ Starting nginx..."
-docker-compose up -d nginx
+$DOCKER_COMPOSE up -d nginx
 
 # Wait for nginx to be ready
 sleep 5
@@ -42,7 +49,7 @@ mkdir -p ssl
 
 # Run certbot to obtain certificate
 echo "⏳ Obtaining SSL certificate..."
-docker-compose run --rm certbot certonly \
+$DOCKER_COMPOSE run --rm certbot certonly \
     --webroot \
     --webroot-path=/var/www/certbot \
     --email $EMAIL \
@@ -54,12 +61,18 @@ docker-compose run --rm certbot certonly \
 
 if [ $? -eq 0 ]; then
     echo "✅ SSL certificate obtained!"
-    echo "🔄 Restarting nginx..."
-    docker-compose restart nginx
+    
+    # Switch to SSL nginx configuration
+    echo "🔄 Switching to SSL nginx configuration..."
+    cp nginx-ssl.conf nginx.conf
+    
+    # Restart nginx with SSL config
+    echo "🔄 Restarting nginx with SSL..."
+    $DOCKER_COMPOSE restart nginx
     
     # Start certbot renewal service
     echo "🔄 Starting certbot renewal service..."
-    docker-compose --profile ssl up -d certbot
+    $DOCKER_COMPOSE --profile ssl up -d certbot
     
     echo "✅ SSL setup complete!"
     echo "🌐 Your site should now be available at https://$DOMAIN"
