@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { Menu, X, ExternalLink, Copy, Check } from "lucide-react";
 import { useState } from "react";
+import { Link, Route, Switch } from "wouter";
+import JobsPage from "@/pages/jobs";
+import NotFound from "@/pages/not-found";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/hooks/use-toast";
@@ -16,11 +19,12 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const links = [
-    { name: "Token", href: "#about" },
-    { name: "Tokenomics", href: "#tokenomics" },
-    { name: "How to Buy", href: "#how-to-buy" },
-    { name: "Roadmap", href: "#roadmap" },
-    { name: "Community", href: "#community" },
+    { name: "Token", href: "/#about", type: "anchor" as const },
+    { name: "Tokenomics", href: "/#tokenomics", type: "anchor" as const },
+    { name: "How to Buy", href: "/#how-to-buy", type: "anchor" as const },
+    { name: "Roadmap", href: "/#roadmap", type: "anchor" as const },
+    { name: "Community", href: "/#community", type: "anchor" as const },
+    { name: "Jobs", href: "/jobs", type: "route" as const },
   ];
 
   return (
@@ -34,13 +38,23 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-6">
           {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="font-mono text-sm hover:text-primary transition-colors font-bold"
-            >
-              {link.name}
-            </a>
+            link.type === "route" ? (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="font-mono text-sm hover:text-primary transition-colors font-bold"
+              >
+                {link.name}
+              </Link>
+            ) : (
+              <a
+                key={link.name}
+                href={link.href}
+                className="font-mono text-sm hover:text-primary transition-colors font-bold"
+              >
+                {link.name}
+              </a>
+            )
           ))}
           <Button 
             asChild
@@ -74,14 +88,25 @@ const Navbar = () => {
         <div className="md:hidden border-t-2 border-black bg-background p-4 absolute w-full">
           <div className="flex flex-col gap-4">
             {links.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="font-mono text-lg font-bold"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </a>
+              link.type === "route" ? (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="font-mono text-lg font-bold"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="font-mono text-lg font-bold"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </a>
+              )
             ))}
             <Button 
               asChild 
@@ -422,10 +447,13 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-6 font-mono text-sm">
-          <a href="#about" className="hover:text-primary transition-colors">Token</a>
-          <a href="#tokenomics" className="hover:text-primary transition-colors">Tokenomics</a>
-          <a href="#how-to-buy" className="hover:text-primary transition-colors">How to Buy</a>
-          <a href="#community" className="hover:text-primary transition-colors">Community</a>
+          <a href="/#about" className="hover:text-primary transition-colors">Token</a>
+          <a href="/#tokenomics" className="hover:text-primary transition-colors">Tokenomics</a>
+          <a href="/#how-to-buy" className="hover:text-primary transition-colors">How to Buy</a>
+          <a href="/#community" className="hover:text-primary transition-colors">Community</a>
+          <Link href="/jobs" className="hover:text-primary transition-colors font-bold underline underline-offset-4">
+            Get career
+          </Link>
           <a 
             href={APPLY_LINK} 
             target="_blank" 
@@ -450,18 +478,28 @@ const Footer = () => {
   );
 };
 
+const HomePage = () => (
+  <main>
+    <Hero />
+    <About />
+    <Tokenomics />
+    <HowToBuy />
+    <Roadmap />
+    <CTA />
+  </main>
+);
+
 function App() {
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-primary selection:text-white">
       <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Tokenomics />
-        <HowToBuy />
-        <Roadmap />
-        <CTA />
-      </main>
+      <Switch>
+        <Route path="/" component={HomePage} />
+        <Route path="/jobs" component={JobsPage} />
+        <Route>
+          <NotFound />
+        </Route>
+      </Switch>
       <Footer />
       <Toaster />
     </div>
