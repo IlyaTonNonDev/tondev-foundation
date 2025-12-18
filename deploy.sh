@@ -10,9 +10,17 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-if ! command -v docker-compose &> /dev/null; then
+# Check for docker compose (plugin) or docker-compose (standalone)
+if ! docker compose version &> /dev/null && ! command -v docker-compose &> /dev/null; then
     echo "❌ Docker Compose is not installed. Please install Docker Compose first."
     exit 1
+fi
+
+# Use docker compose (plugin) if available, otherwise docker-compose (standalone)
+if docker compose version &> /dev/null; then
+    DOCKER_COMPOSE="docker compose"
+else
+    DOCKER_COMPOSE="docker-compose"
 fi
 
 # Check if .env file exists
@@ -31,16 +39,16 @@ fi
 
 # Build and start containers
 echo "🔨 Building and starting containers..."
-docker-compose down
-docker-compose build --no-cache
-docker-compose up -d
+$DOCKER_COMPOSE down
+$DOCKER_COMPOSE build --no-cache
+$DOCKER_COMPOSE up -d
 
 # Wait for services to be ready
 echo "⏳ Waiting for services to start..."
 sleep 10
 
 # Check if services are running
-if docker-compose ps | grep -q "Up"; then
+if $DOCKER_COMPOSE ps | grep -q "Up"; then
     echo "✅ Services are running!"
     echo "🌐 Application should be available at http://$(hostname -I | awk '{print $1}'):5000"
     echo ""
@@ -53,9 +61,9 @@ if docker-compose ps | grep -q "Up"; then
     echo "   ./setup-ssl.sh"
     echo ""
     echo "3. View logs:"
-    echo "   docker-compose logs -f"
+    echo "   $DOCKER_COMPOSE logs -f"
 else
-    echo "❌ Some services failed to start. Check logs with: docker-compose logs"
+    echo "❌ Some services failed to start. Check logs with: $DOCKER_COMPOSE logs"
     exit 1
 fi
 
