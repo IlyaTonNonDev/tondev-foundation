@@ -298,7 +298,11 @@ export default function JobsPage() {
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                   <div className="flex flex-wrap gap-2 break-words">
                     {job.perks.map((perk) => (
-                      <Badge key={perk} variant="secondary" className="border border-black">
+                      <Badge
+                        key={perk}
+                        variant="secondary"
+                        className="border border-black w-full sm:w-auto text-left break-words whitespace-normal hyphens-auto leading-tight"
+                      >
                         {perk}
                       </Badge>
                     ))}
