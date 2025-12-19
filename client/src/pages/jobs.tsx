@@ -199,7 +199,7 @@ export default function JobsPage() {
   };
 
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-background text-foreground overflow-x-hidden">
       <section className="border-b-2 border-black bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] py-16 md:py-24">
         <div className="container mx-auto px-4 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl space-y-4">
@@ -253,7 +253,7 @@ export default function JobsPage() {
             {jobs.map((job) => (
               <motion.article
                 key={job.id}
-                className="sketch-border bg-white p-6 md:p-8 flex flex-col gap-4"
+                className="sketch-border bg-white p-6 md:p-8 flex flex-col gap-4 overflow-hidden max-w-full w-full"
                 whileHover={{ translateY: -4 }}
               >
                 <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -265,7 +265,9 @@ export default function JobsPage() {
                     <p className="font-mono text-sm text-muted-foreground">
                       {job.seniority} · {job.location}
                     </p>
-                    <p className="font-mono text-sm text-foreground/80 max-w-3xl">{job.summary}</p>
+                    <p className="font-mono text-sm text-foreground/80 w-full break-words whitespace-normal hyphens-auto leading-relaxed">
+                      {job.summary}
+                    </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline" className="border-black">Full-time</Badge>
@@ -277,7 +279,7 @@ export default function JobsPage() {
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="space-y-2 md:col-span-2">
                     <h4 className="font-bold">Responsibilities</h4>
-                    <ul className="list-disc list-inside space-y-1 font-mono text-sm text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-1 font-mono text-sm text-muted-foreground break-words leading-relaxed whitespace-pre-line">
                       {job.responsibilities.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
@@ -285,7 +287,7 @@ export default function JobsPage() {
                   </div>
                   <div className="space-y-2">
                     <h4 className="font-bold">Requirements</h4>
-                    <ul className="list-disc list-inside space-y-1 font-mono text-sm text-muted-foreground">
+                    <ul className="list-disc list-inside space-y-1 font-mono text-sm text-muted-foreground break-words leading-relaxed whitespace-pre-line">
                       {job.requirements.map((item) => (
                         <li key={item}>{item}</li>
                       ))}
@@ -294,7 +296,7 @@ export default function JobsPage() {
                 </div>
 
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 break-words">
                     {job.perks.map((perk) => (
                       <Badge key={perk} variant="secondary" className="border border-black">
                         {perk}
